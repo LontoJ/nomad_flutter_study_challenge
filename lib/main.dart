@@ -1,13 +1,18 @@
 import 'package:challenge_day16/constants/sizes.dart';
 import 'package:challenge_day16/features/setting/repos/setting_repo.dart';
 import 'package:challenge_day16/features/setting/view_models/setting_view_model.dart';
+import 'package:challenge_day16/firebase_options.dart';
 import 'package:challenge_day16/router.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await Hive.initFlutter();
   final Box box = await Hive.openBox('twitter_box');
   final settingRepository = SettingRepository(box);

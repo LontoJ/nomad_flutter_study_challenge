@@ -1,6 +1,7 @@
 import 'package:challenge_day16/constants/gaps.dart';
 import 'package:challenge_day16/constants/sizes.dart';
 import 'package:challenge_day16/features/authentication/views/create_account_screen.dart';
+import 'package:challenge_day16/features/authentication/views/login_screen.dart';
 import 'package:challenge_day16/features/authentication/views/widgets/custom_divider.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/color_button.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/logo_border_button.dart';
@@ -17,6 +18,10 @@ class InitialScreen extends StatelessWidget {
 
   void _goToCreateAccount(BuildContext context) {
     context.push(CreateAccountScreen.routeURL);
+  }
+
+  void _goToLoginScreen(BuildContext context) {
+    context.push(LoginScreen.routeURL);
   }
 
   @override
@@ -112,23 +117,28 @@ class InitialScreen extends StatelessWidget {
                 ),
               ),
               Gaps.v32,
-              Align(
-                alignment: Alignment.centerLeft,
-                child: RichText(
-                  text: TextSpan(
-                    text: "Have an account already? ",
-                    style: const TextStyle(
-                      fontSize: Sizes.size14,
-                      color: Colors.grey,
-                    ),
-                    children: [
-                      TextSpan(
-                        text: "Log in",
-                        style: TextStyle(
-                          color: Theme.of(context).primaryColor,
-                        ),
+              GestureDetector(
+                onTap: () {
+                  _goToLoginScreen(context);
+                },
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Have an account already? ",
+                      style: const TextStyle(
+                        fontSize: Sizes.size14,
+                        color: Colors.grey,
                       ),
-                    ],
+                      children: [
+                        TextSpan(
+                          text: "Log in",
+                          style: TextStyle(
+                            color: Theme.of(context).primaryColor,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),

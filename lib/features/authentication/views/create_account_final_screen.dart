@@ -1,25 +1,28 @@
 import 'package:challenge_day16/constants/gaps.dart';
 import 'package:challenge_day16/constants/sizes.dart';
+import 'package:challenge_day16/features/authentication/view_models/signup_view_model.dart';
 import 'package:challenge_day16/features/authentication/views/confirmation_code_screen.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/color_button.dart';
 import 'package:challenge_day16/features/common/widgets/logos/twitter_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class CreateAccountFinalScreen extends StatefulWidget {
+class CreateAccountFinalScreen extends ConsumerStatefulWidget {
   static const routeURL = "/create_account_final";
   static const routeName = "create_account_final";
 
-  final Map<String, String>? object;
-
-  const CreateAccountFinalScreen({super.key, this.object});
+  const CreateAccountFinalScreen({
+    super.key,
+  });
 
   @override
-  State<CreateAccountFinalScreen> createState() =>
+  ConsumerState<CreateAccountFinalScreen> createState() =>
       _CreateAccountFinalScreenState();
 }
 
-class _CreateAccountFinalScreenState extends State<CreateAccountFinalScreen> {
+class _CreateAccountFinalScreenState
+    extends ConsumerState<CreateAccountFinalScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneOrEmailController = TextEditingController();
@@ -39,11 +42,11 @@ class _CreateAccountFinalScreenState extends State<CreateAccountFinalScreen> {
   @override
   void initState() {
     super.initState();
-    if (widget.object != null) {
-      _nameController.text = widget.object!["name"].toString();
-      _phoneOrEmailController.text = widget.object!["email"].toString();
-      _birthdayController.text = widget.object!["birth"].toString();
-    }
+    final state = ref.read(signUpForm.notifier).state;
+
+    _nameController.text = state["name"].toString();
+    _phoneOrEmailController.text = state["email"].toString();
+    _birthdayController.text = state["birth"].toString();
   }
 
   @override

@@ -1,14 +1,15 @@
 import 'package:challenge_day16/constants/gaps.dart';
 import 'package:challenge_day16/constants/sizes.dart';
 import 'package:challenge_day16/features/authentication/constants/interests_data.dart';
+import 'package:challenge_day16/features/authentication/view_models/signup_view_model.dart';
 import 'package:challenge_day16/features/authentication/views/widgets/interest_button.dart';
-import 'package:challenge_day16/features/common/views/main_navigation_screen.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/color_button.dart';
 import 'package:challenge_day16/features/common/widgets/logos/twitter_logo.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-class InterestsDetailScreen extends StatefulWidget {
+class InterestsDetailScreen extends ConsumerStatefulWidget {
   static const routeURL = "/interests_detail";
   static const routeName = "interests_detail";
   final Map<String, List<String>>? object;
@@ -16,10 +17,11 @@ class InterestsDetailScreen extends StatefulWidget {
   const InterestsDetailScreen({super.key, this.object});
 
   @override
-  State<InterestsDetailScreen> createState() => _InterestsDetailScreenState();
+  ConsumerState<InterestsDetailScreen> createState() =>
+      _InterestsDetailScreenState();
 }
 
-class _InterestsDetailScreenState extends State<InterestsDetailScreen> {
+class _InterestsDetailScreenState extends ConsumerState<InterestsDetailScreen> {
   Set<String> selectedInterests = {};
 
   void _onScaffoldTap() {
@@ -27,9 +29,7 @@ class _InterestsDetailScreenState extends State<InterestsDetailScreen> {
   }
 
   void _goToMainNavigation(BuildContext context) {
-    context.goNamed(
-      MainNavigationScreen.routeName,
-    );
+    ref.read(signUpProvider.notifier).signUp(context);
   }
 
   void onSelected({required String interest}) {
@@ -208,7 +208,8 @@ class _InterestsDetailScreenState extends State<InterestsDetailScreen> {
                   widthFactor: 0.4,
                   child: ColorButton(
                     text: "Next",
-                    isDisabled: selectedInterests.length < 3,
+                    isDisabled: selectedInterests.length < 3 ||
+                        ref.watch(signUpProvider).isLoading,
                     onPressed: _goToMainNavigation,
                   ),
                 ),

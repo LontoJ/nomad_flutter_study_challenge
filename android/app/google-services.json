@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1094340249290",
+    "project_id": "nomad-twitter-study-challenge",
+    "storage_bucket": "nomad-twitter-study-challenge.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1094340249290:android:2d60c52669ffff6bbad633",
+        "android_client_info": {
+          "package_name": "com.example.challenge_day16"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCaeFDcBR9jkdN5KqEw7QfDIDii-7DZZds"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

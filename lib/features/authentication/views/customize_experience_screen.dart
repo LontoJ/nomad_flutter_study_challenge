@@ -10,9 +10,9 @@ class CustomizeExperienceScreen extends StatefulWidget {
   static const routeURL = "/customize_experience";
   static const routeName = "customize_experience";
 
-  final Map<String, String>? object;
-
-  const CustomizeExperienceScreen({super.key, this.object});
+  const CustomizeExperienceScreen({
+    super.key,
+  });
 
   @override
   State<CustomizeExperienceScreen> createState() =>
@@ -29,7 +29,7 @@ class _CustomizeExperienceScreenState extends State<CustomizeExperienceScreen> {
   }
 
   void _goToCreateAccountFinal(BuildContext context) {
-    context.push(CreateAccountFinalScreen.routeURL, extra: widget.object);
+    context.push(CreateAccountFinalScreen.routeURL);
   }
 
   @override

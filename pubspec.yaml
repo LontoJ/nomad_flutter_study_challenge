@@ -46,6 +46,10 @@ dependencies:
   gallery_saver: ^2.3.2
   image_picker: ^1.0.4
   hive_flutter: ^1.1.0
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
+  cloud_firestore: ^4.9.1
+  firebase_storage: ^11.2.6
 
 dev_dependencies:
   flutter_test:

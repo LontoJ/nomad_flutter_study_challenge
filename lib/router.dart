@@ -1,3 +1,4 @@
+import 'package:challenge_day16/features/authentication/repos/authentication_repo.dart';
 import 'package:challenge_day16/features/authentication/views/confirmation_code_screen.dart';
 import 'package:challenge_day16/features/authentication/views/create_account_final_screen.dart';
 import 'package:challenge_day16/features/authentication/views/create_account_screen.dart';
@@ -5,6 +6,7 @@ import 'package:challenge_day16/features/authentication/views/customize_experien
 import 'package:challenge_day16/features/authentication/views/initial_screen.dart';
 import 'package:challenge_day16/features/authentication/views/interests_detail_screen.dart';
 import 'package:challenge_day16/features/authentication/views/interests_screen.dart';
+import 'package:challenge_day16/features/authentication/views/login_screen.dart';
 import 'package:challenge_day16/features/authentication/views/password_screen.dart';
 import 'package:challenge_day16/features/camera/views/camera_screen.dart';
 import 'package:challenge_day16/features/common/views/main_navigation_screen.dart';
@@ -16,11 +18,33 @@ import 'package:go_router/go_router.dart';
 final routerProvider = Provider((ref) {
   return GoRouter(
     initialLocation: "/",
+    redirect: (context, state) {
+      final isLoggedIn = ref.read(authRepo).isLoggedIn;
+      if (!isLoggedIn) {
+        if (state.matchedLocation != InitialScreen.routeURL &&
+            state.matchedLocation != CreateAccountScreen.routeURL &&
+            state.matchedLocation != CreateAccountFinalScreen.routeURL &&
+            state.matchedLocation != CustomizeExperienceScreen.routeURL &&
+            state.matchedLocation != ConfirmationCodeScreen.routeURL &&
+            state.matchedLocation != PasswordScreen.routeURL &&
+            state.matchedLocation != InterestsScreen.routeURL &&
+            state.matchedLocation != InterestsDetailScreen.routeURL &&
+            state.matchedLocation != LoginScreen.routeURL) {
+          return InitialScreen.routeURL;
+        }
+      }
+      return null;
+    },
     routes: [
       GoRoute(
         name: InitialScreen.routeName,
         path: InitialScreen.routeURL,
         builder: (context, state) => const InitialScreen(),
+      ),
+      GoRoute(
+        name: LoginScreen.routeName,
+        path: LoginScreen.routeURL,
+        builder: (context, state) => const LoginScreen(),
       ),
       GoRoute(
         name: CreateAccountScreen.routeName,
@@ -33,26 +57,14 @@ final routerProvider = Provider((ref) {
         name: CustomizeExperienceScreen.routeName,
         path: CustomizeExperienceScreen.routeURL,
         builder: (context, state) {
-          Map<String, String>? accountInfo;
-          if (state.extra != null) {
-            accountInfo = state.extra as Map<String, String>;
-          }
-          return CustomizeExperienceScreen(
-            object: accountInfo,
-          );
+          return const CustomizeExperienceScreen();
         },
       ),
       GoRoute(
         name: CreateAccountFinalScreen.routeName,
         path: CreateAccountFinalScreen.routeURL,
         builder: (context, state) {
-          Map<String, String>? accountInfo;
-          if (state.extra != null) {
-            accountInfo = state.extra as Map<String, String>;
-          }
-          return CreateAccountFinalScreen(
-            object: accountInfo,
-          );
+          return const CreateAccountFinalScreen();
         },
       ),
       GoRoute(
@@ -104,9 +116,7 @@ final routerProvider = Provider((ref) {
           final tab = state.pathParameters["tab"] ?? "";
           return MainNavigationScreen(tab: tab);
         },
-
       ),
-      
       GoRoute(
         path: "/settings/:subTab(privacy)",
         builder: (context, state) {
@@ -127,22 +137,20 @@ final routerProvider = Provider((ref) {
       GoRoute(
         path: CameraScreen.routeURL,
         name: CameraScreen.routeName,
-        pageBuilder: (context, state) =>
-            CustomTransitionPage(
-              transitionDuration: const Duration(milliseconds: 200),
-              child: const CameraScreen(),
-              transitionsBuilder: (context, animation, secondaryAnimation,
-                  child) {
-                final position = Tween(
-                  begin: const Offset(0, 1),
-                  end: Offset.zero,
-                ).animate(animation);
-                return SlideTransition(
-                  position: position,
-                  child: child,
-                );
-              },
-            ),
+        pageBuilder: (context, state) => CustomTransitionPage(
+          transitionDuration: const Duration(milliseconds: 200),
+          child: const CameraScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            final position = Tween(
+              begin: const Offset(0, 1),
+              end: Offset.zero,
+            ).animate(animation);
+            return SlideTransition(
+              position: position,
+              child: child,
+            );
+          },
+        ),
       )
     ],
   );

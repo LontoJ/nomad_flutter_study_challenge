@@ -1,9 +1,11 @@
+import 'package:challenge_day16/features/authentication/repos/authentication_repo.dart';
+import 'package:challenge_day16/features/authentication/views/initial_screen.dart';
 import 'package:challenge_day16/features/setting/view_models/setting_view_model.dart';
-import 'package:challenge_day16/utils/utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:go_router/go_router.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   final void Function(int index) handleScreenIndex;
@@ -148,10 +150,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   ),
                   ListTile(
                     title: const Text("Log out"),
-                    trailing: CupertinoActivityIndicator(
-                      radius: 12,
-                      color: isDarkMode(context) ? Colors.white : Colors.grey,
-                    ),
+                    // trailing: CupertinoActivityIndicator(
+                    //   radius: 12,
+                    //   color: isDarkMode(context) ? Colors.white : Colors.grey,
+                    // ),
                     textColor: Theme.of(context).primaryColor,
                     onTap: () {
                       showCupertinoDialog(
@@ -165,7 +167,10 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                               child: const Text("No"),
                             ),
                             CupertinoDialogAction(
-                              onPressed: () => Navigator.of(context).pop(),
+                              onPressed: () {
+                                ref.read(authRepo).signOut();
+                                context.goNamed(InitialScreen.routeName);
+                              },
                               isDestructiveAction: true,
                               child: const Text("Yes"),
                             ),

@@ -1,15 +1,17 @@
 import 'package:challenge_day16/constants/gaps.dart';
 import 'package:challenge_day16/constants/sizes.dart';
+import 'package:challenge_day16/features/authentication/view_models/signup_view_model.dart';
 import 'package:challenge_day16/features/authentication/views/customize_experience_screen.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/color_button.dart';
 import 'package:challenge_day16/features/common/widgets/buttons/custom_text_button.dart';
 import 'package:challenge_day16/features/common/widgets/logos/twitter_logo.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
-class CreateAccountScreen extends StatefulWidget {
+class CreateAccountScreen extends ConsumerStatefulWidget {
   static const routeURL = "/create_account";
   static const routeName = "create_account";
 
@@ -18,10 +20,11 @@ class CreateAccountScreen extends StatefulWidget {
   });
 
   @override
-  State<CreateAccountScreen> createState() => _CreateAccountScreenState();
+  ConsumerState<CreateAccountScreen> createState() =>
+      _CreateAccountScreenState();
 }
 
-class _CreateAccountScreenState extends State<CreateAccountScreen> {
+class _CreateAccountScreenState extends ConsumerState<CreateAccountScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _phoneOrEmailController = TextEditingController();
@@ -44,9 +47,12 @@ class _CreateAccountScreenState extends State<CreateAccountScreen> {
     if (_formKey.currentState != null) {
       if (_formKey.currentState!.validate()) {
         _formKey.currentState!.save();
+        ref.read(signUpForm.notifier).state = {
+          ...formData,
+          "email": formData['email']
+        };
         context.push(
           CustomizeExperienceScreen.routeURL,
-          extra: formData,
         );
       }
     }
